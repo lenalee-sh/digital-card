@@ -12,9 +12,9 @@ html, body {
     overflow-y: auto;
     overflow-x: hidden;
     overscroll-behavior-x: none;
-    max-width: 100%;
 }
 
+/* 🌈 背景 */
 .bg {
     position: fixed;
     top: -50%;
@@ -25,8 +25,8 @@ html, body {
     background-size: 400% 400%;
     animation: move 12s ease infinite;
     z-index: -1;
-    transition: background 0.6s ease;
     pointer-events: none;
+    transition: background 0.6s ease;
 }
 
 @keyframes move {
@@ -35,38 +35,46 @@ html, body {
     100% { background-position: 0% 50%; }
 }
 
+/* 滑動 */
 .container {
-    height: 100vh;
+    height: 100dvh;
     overflow-y: auto;
     scroll-snap-type: y mandatory;
-    scroll-behavior: smooth;
 }
 
 .section {
-    height: 100vh;
+    height: 100dvh;
     display: flex;
     justify-content: center;
     align-items: center;
     scroll-snap-align: start;
 }
 
+/* 💌 明信片 */
 .card {
-    background: rgba(255,255,255,0.85);
-    backdrop-filter: blur(10px);
-    padding: 40px;
-    border-radius: 20px;
-    width: 90%;
-    max-width: 340px;
-    text-align: center;
-    box-shadow: 0 12px 30px rgba(0,0,0,0.1);
+    display: flex;
+    width: 95%;
+    max-width: 500px;
+    background: #fffafc;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    overflow: hidden;
+}
+
+/* 左：頭像區 */
+.left {
+    width: 40%;
+    background: #fde2e4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .avatar {
-    width: 120px;
-    height: 120px;
+    width: 100px;
+    height: 100px;
     border-radius: 50%;
     overflow: hidden;
-    margin: 0 auto 20px;
 }
 
 .avatar img {
@@ -75,43 +83,76 @@ html, body {
     object-fit: cover;
 }
 
+/* 右：文字區 */
+.right {
+    width: 60%;
+    padding: 20px;
+    text-align: left;
+    position: relative;
+}
+
+/* 分隔線（郵件風） */
+.right::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 10%;
+    height: 80%;
+    width: 2px;
+    background: repeating-linear-gradient(
+        to bottom,
+        #ccc,
+        #ccc 6px,
+        transparent 6px,
+        transparent 12px
+    );
+}
+
+/* 文字 */
 h1 {
-    font-size: 22px;
-    margin: 10px 0;
+    font-size: 18px;
+    margin: 0 0 10px;
 }
 
 p {
+    font-size: 13px;
     color: #666;
-    font-size: 14px;
-    margin-bottom: 25px;
 }
 
+/* 按鈕 */
 .buttons {
+    margin-top: 15px;
     display: flex;
-    gap: 10px;
-    justify-content: center;
+    flex-wrap: wrap;
+    gap: 6px;
 }
 
 .btn {
-    padding: 10px 16px;
+    padding: 6px 10px;
+    font-size: 12px;
     border-radius: 999px;
     border: none;
     background: #ffd6e0;
     cursor: pointer;
-    transition: transform 0.2s ease;
 }
 
-.btn:hover {
-    transform: translateY(-2px);
+/* 裝飾 */
+.decor {
+    position: fixed;
+    z-index: -1;
+    opacity: 0.6;
 }
 
+.decor-left { top: 20px; left: 10px; width: 100px; }
+.decor-right { bottom: 20px; right: 10px; width: 120px; }
+
+/* 波紋 */
 .ripple {
     position: fixed;
     border-radius: 50%;
     background: rgba(255,255,255,0.5);
     transform: scale(0);
     animation: ripple 0.6s linear;
-    pointer-events: none;
 }
 
 @keyframes ripple {
@@ -121,28 +162,19 @@ p {
     }
 }
 
-.decor {
-    position: fixed;
-    z-index: -1;
-    opacity: 0.6;
-    pointer-events: none;
-}
-
-.decor-left {
-    top: 20px;
-    left: 10px;
-    width: 120px;
-}
-
-.decor-right {
-    bottom: 20px;
-    right: 10px;
-    width: 140px;
-}
-
+/* 📱 手機 */
 @media (max-width: 480px) {
-    .decor-left { width: 90px; }
-    .decor-right { width: 100px; }
+    .card {
+        flex-direction: column;
+    }
+
+    .left, .right {
+        width: 100%;
+    }
+
+    .right::before {
+        display: none;
+    }
 }
 </style>
 </head>
@@ -158,31 +190,44 @@ p {
 
 <div class="section">
     <div class="card">
-        <div class="avatar">
-            <img src="https://i.postimg.cc/k25123jk/your-photo.jpg" alt="avatar">
+
+        <!-- 左 -->
+        <div class="left">
+            <div class="avatar">
+                <img src="https://i.postimg.cc/k25123jk/your-photo.jpg">
+            </div>
         </div>
 
-        <h1>李涵羚</h1>
-        <p>我是熱愛小說和睡覺的交大學生，周休五日</p>
+        <!-- 右 -->
+        <div class="right">
+            <h1>李涵羚</h1>
+            <p>我是熱愛小說和睡覺的交大學生，周休五日</p>
 
-        <div class="buttons">
-            <a href="https://www.instagram.com/ohinjun/" target="_blank">
-                <button class="btn" onclick="changeToPurple()">Instagram</button>
-            </a>
-            <a href="mailto:lena0526.la14@nycu.edu.tw">
-                <button class="btn" onclick="changeToPurple()">Gmail</button>
-            </a>
-            <a href="https://page.line.me/115covhy" target="_blank">
-                <button class="btn" onclick="changeToPurple()">Line</button>
-            </a>
+            <div class="buttons">
+                <a href="https://www.instagram.com/ohinjun/" target="_blank">
+                    <button class="btn" onclick="changeToPurple()">IG</button>
+                </a>
+                <a href="mailto:lena0526.la14@nycu.edu.tw">
+                    <button class="btn" onclick="changeToPurple()">Mail</button>
+                </a>
+                <a href="https://page.line.me/115covhy" target="_blank">
+                    <button class="btn" onclick="changeToPurple()">Line</button>
+                </a>
+                <a href="https://lenalee-sh.github.io/digital-card/" target="_blank">
+                    <button class="btn" onclick="changeToPurple()">架設好在伺服器上的完整版網站，手機電腦適用</button>
+                </a>
+            </div>
         </div>
+
     </div>
 </div>
 
 <div class="section">
     <div class="card">
-        <h1>✨ 滑動成功</h1>
-        <p>這裡可以放你的專題 / 作品</p>
+        <div class="right">
+            <h1>✨ 我的作品</h1>
+            <p>這裡可以放你的 LLM 專題 / 設計作品</p>
+        </div>
     </div>
 </div>
 
@@ -193,19 +238,16 @@ function changeToPurple() {
     document.querySelector('.bg').style.background = "#d8b4f8";
 }
 
-const colors = [
-"#f4c7c3",
-"#f7d6bf",
-"#f4e1c1",
-"#d7e6d5",
-"#cfe0e8",
-"#e2d6f3"
-];
+const colors = ["#f4c7c3","#f7d6bf","#f4e1c1","#d7e6d5","#cfe0e8","#e2d6f3"];
 
 document.body.addEventListener("pointerdown", function(e) {
 
+    // 按鈕區不觸發
+    if (e.target.closest(".buttons")) return;
+
+    // 波紋
     const ripple = document.createElement("span");
-    ripple.classList.add("ripple");
+    ripple.className = "ripple";
     ripple.style.width = ripple.style.height = "100px";
     ripple.style.left = e.clientX - 50 + "px";
     ripple.style.top = e.clientY - 50 + "px";
@@ -213,10 +255,9 @@ document.body.addEventListener("pointerdown", function(e) {
     document.body.appendChild(ripple);
     setTimeout(() => ripple.remove(), 600);
 
-    if (e.target.classList.contains("btn")) return;
-
-    const randomColor = colors[Math.floor(Math.random() * colors.length)];
-    document.querySelector('.bg').style.background = randomColor;
+    // 顏色
+    const color = colors[Math.floor(Math.random() * colors.length)];
+    document.querySelector('.bg').style.background = color;
 });
 </script>
 
